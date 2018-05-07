@@ -1,0 +1,20 @@
+  <TypeDefinitions>
+    <EntityTypes>
+      <RelationshipTypes>
+        <RelationshipType ID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer" Base="System!System.Hosting" Abstract="false" Accessibility="Internal">
+          <Source ID="Source" Type="Windows!Microsoft.Windows.Computer"/>
+          <Target ID="Target" Type="F12.Batura.Monitoring.AppServer"/>
+        </RelationshipType>
+      </RelationshipTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer">
+          <Name>Windows Computer Hosts Batura Application Server</Name>
+          <Description></Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
