@@ -1,37 +1,4 @@
-ï»¿<?xml version="1.0" encoding="utf-8"?>
-<ManagementPack SchemaVersion="2.0" ContentReadable="true" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Manifest>
-    <Identity>
-      <ID>F12.Batura.Monitoring</ID>
-      <Version>1.0.0.0</Version>
-    </Identity>
-    <Name>F12 Batura Monitoring</Name>
-    <References>
-      <Reference Alias="Windows">
-        <ID>Microsoft.Windows.Library</ID>
-        <Version>7.5.8501.0</Version>
-        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-      </Reference>
-      <Reference Alias="System">
-        <ID>System.Library</ID>
-        <Version>7.5.8501.0</Version>
-        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
-      </Reference>
-    </References>
-  </Manifest>
-  <TypeDefinitions>
-    <EntityTypes>
-      <ClassTypes>
-        <ClassType ID="F12.Batura.Monitoring.AppServer" Base="Windows!Microsoft.Windows.ApplicationComponent" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false"></ClassType>
-      </ClassTypes>
-      <RelationshipTypes>
-        <RelationshipType ID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer" Base="System!System.Hosting" Abstract="false" Accessibility="Internal">
-          <Source ID="Source" Type="Windows!Microsoft.Windows.Computer" />
-          <Target ID="Target" Type="F12.Batura.Monitoring.AppServer" />
-        </RelationshipType>
-      </RelationshipTypes>
-    </EntityTypes>
-  </TypeDefinitions>
+
   <Monitoring>
     <Discoveries>
       <Discovery ID="F12.Batura.Monitoring.AppServer.Discovery" Target="Windows!Microsoft.Windows.Server.OperatingSystem" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
@@ -43,18 +10,18 @@
           <ComputerName>$Target/Host/Property[Type="Windows!Microsoft.Windows.Computer"]/PrincipalName$</ComputerName>
           <RegistryAttributeDefinitions>
             <RegistryAttributeDefinition>
-              <!-- 
+  <!-- 
 PathType - Integer
   Specifies whether the path is a key or a value.
-  â€¢ 0â€”Specifies that the path is to a key, for which the existence of the key should be checked.
-  â€¢ 1â€”Specifies that the path is to a value that should be retrieved.
+  • 0—Specifies that the path is to a key, for which the existence of the key should be checked.
+  • 1—Specifies that the path is to a value that should be retrieved.
 
 AttributeType -   Integer
   The data type of the value to return:
-  â€¢ 0â€”Boolean
-  â€¢ 1â€”String
-  â€¢ 2â€”Integer
-  â€¢ 3â€”Float
+  • 0—Boolean
+  • 1—String
+  • 2—Integer
+  • 3—Float
 Values 1, 2, and 3 are used only when the PathType is set to 1.
 -->
               <AttributeName>SeedExists</AttributeName>
@@ -95,24 +62,11 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
   <LanguagePacks>
     <LanguagePack ID="ENU" IsDefault="true">
       <DisplayStrings>
-        <DisplayString ElementID="F12.Batura.Monitoring.AppServer">
-          <Name>Batura Application Server</Name>
-          <Description></Description>
-        </DisplayString>
-        <DisplayString ElementID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer">
-          <Name>Windows Computer Hosts Batura Application Server</Name>
-          <Description></Description>
-        </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.AppServer.Discovery">
           <Name>Discover Batura Application Server</Name>
           <Description>Description for the new discovery.</Description>
-        </DisplayString>
-        <DisplayString ElementID="F12.Batura.Monitoring">
-          <Name>F12 Batura Monitoring</Name>
-          <Description>\\server\share\scom\mp\requirements\Batura.docx</Description>
         </DisplayString>
       </DisplayStrings>
       <KnowledgeArticles></KnowledgeArticles>
     </LanguagePack>
   </LanguagePacks>
-</ManagementPack>

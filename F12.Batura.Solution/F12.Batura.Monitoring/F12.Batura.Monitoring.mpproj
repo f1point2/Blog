@@ -58,6 +58,9 @@
     <Compile Include="ClassesDiscoveriesRelationship\2_WindowsComputer_Hosts_BaturaApplicationServer.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\3_Discovery_Registry_BaturaAppServer.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ManagementPack.mpx">
       <SubType>Code</SubType>
     </Compile>
