@@ -1,0 +1,18 @@
+ <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="F12.Batura.Monitoring.AppServer" Base="Windows!Microsoft.Windows.ApplicationComponent" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false">
+        </ClassType>
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.AppServer">
+          <Name>Batura Application Server</Name>
+          <Description></Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>

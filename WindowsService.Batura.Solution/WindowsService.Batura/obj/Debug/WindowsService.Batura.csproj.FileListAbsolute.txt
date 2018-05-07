@@ -1,0 +1,9 @@
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\bin\Debug\WindowsService.Batura.exe.config
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\bin\Debug\WindowsService.Batura.exe
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\bin\Debug\WindowsService.Batura.pdb
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.csprojResolveAssemblyReference.cache
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.BaturaDoStuffService.resources
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.csproj.GenerateResource.Cache
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.exe
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.pdb
+C:\GitHub\SquaredUpBlog\WindowsService.Batura.Solution\WindowsService.Batura\obj\Debug\WindowsService.Batura.ProjectInstaller.resources
