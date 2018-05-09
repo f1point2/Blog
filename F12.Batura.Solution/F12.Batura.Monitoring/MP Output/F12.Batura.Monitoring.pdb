@@ -1,13 +1,16 @@
 ClassesDiscoveriesRelationship\1_Batura_ApplicationServer_Class.mpx*F12.Batura.Monitoring.AppServer*5*10*ClassType
 ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring.AppServer.Group*5*10*ClassType
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.Computer.Group*5*10*ClassType
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.OperatingSystem.Group*5*10*ClassType
 ClassesDiscoveriesRelationship\2_WindowsComputer_Hosts_BaturaApplicationServer.mpx*F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer*5*10*RelationshipType
 ClassesDiscoveriesRelationship\3_Discovery_Registry_BaturaAppServer.mpx*F12.Batura.Monitoring.AppServer.Discovery*5*8*Discovery
 ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring.AppServer.Group.Discovery*11*8*Discovery
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.Computer.Group.Discovery*11*8*Discovery
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.OperatingSystem.Group.Discovery*11*10*Discovery
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff*4*8*UnitMonitor
 ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring.DepMonitor.BaturaAppGroup*29*8*DependencyMonitor
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup*34*8*DependencyMonitor
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.DepMonitor.BaturaOperatingSystemGroup*39*10*DependencyMonitor
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage*29*8*StringResource
 ClassesDiscoveriesRelationship\1_Batura_ApplicationServer_Class.mpx*F12.Batura.Monitoring.AppServer*13*10*DisplayString
 ClassesDiscoveriesRelationship\2_WindowsComputer_Hosts_BaturaApplicationServer.mpx*F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer*15*10*DisplayString
@@ -18,6 +21,9 @@ ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.Computer.Group*43*10*DisplayString
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.Computer.Group.Discovery*47*10*DisplayString
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup*51*10*DisplayString
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.OperatingSystem.Group*48*12*DisplayString
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.OperatingSystem.Group.Discovery*52*12*DisplayString
+ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx*F12.Batura.Monitoring.DepMonitor.BaturaOperatingSystemGroup*56*12*DisplayString
 ManagementPack.mpx*F12.Batura.Monitoring*5*10*DisplayString
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff*35*10*DisplayString
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage*39*10*DisplayString

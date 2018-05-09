@@ -1,0 +1,62 @@
+<TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="F12.Batura.Monitoring.OperatingSystem.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="F12.Batura.Monitoring.OperatingSystem.Group.Discovery" Target="F12.Batura.Monitoring.OperatingSystem.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Server.OperatingSystem"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <Contained maxDepth="1">
+                  <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</MonitoringClass>
+		 <Expression>
+                	<Contains maxDepth="1">
+                  		<MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.AppServer"]$</MonitoringClass>
+                	</Contains>
+              	</Expression>
+                </Contained>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+    <Monitors>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaOperatingSystemGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.OperatingSystem.Group">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+    </Monitors>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.OperatingSystem.Group">
+          <Name>Batura Operating System Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.OperatingSystem.Group.Discovery">
+          <Name>Discover Batura Operating System Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaOperatingSystemGroup">
+          <Name>Batura Operating System Group  Health Roll up (Dependency Rollup Monitor)</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
