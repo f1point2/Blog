@@ -6,7 +6,6 @@
     </EntityTypes>
   </TypeDefinitions>
   <Monitoring>
-  <Monitoring>
     <Discoveries>
       <Discovery ID="F12.Batura.Monitoring.OperatingSystem.Group.Discovery" Target="F12.Batura.Monitoring.OperatingSystem.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
         <Category>Discovery</Category>

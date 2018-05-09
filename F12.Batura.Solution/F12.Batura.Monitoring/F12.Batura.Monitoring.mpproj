@@ -6,7 +6,7 @@
     <RootNamespace>F12.Batura.Monitoring</RootNamespace>
     <Name>F12 Batura Monitoring</Name>
     <ManagementPackName>F12.Batura.Monitoring</ManagementPackName>
-    <Version>1.0.0.5</Version>
+    <Version>1.0.0.6</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -73,6 +73,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassesDiscoveriesRelationship\6_Group_BaturaOperatingSystem.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\7_Group_BaturaHSW.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ManagementPack.mpx">
