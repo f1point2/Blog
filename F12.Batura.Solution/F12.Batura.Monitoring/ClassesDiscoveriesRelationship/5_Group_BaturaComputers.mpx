@@ -1,0 +1,60 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="F12.Batura.Monitoring.Computer.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="F12.Batura.Monitoring.Computer.Group.Discovery" Target="F12.Batura.Monitoring.Computer.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <Contains maxDepth="1">
+                  <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.AppServer"]$</MonitoringClass>
+                </Contains>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+    <Monitors>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.Computer.Group">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+    </Monitors>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.Computer.Group">
+          <Name>Batura Computer Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Computer.Group.Discovery">
+          <Name>Discover Batura Computer Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup">
+          <Name>Batura Computer Group  Health Roll up (Dependency Rollup Monitor)</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+
+
+</ManagementPackFragment>

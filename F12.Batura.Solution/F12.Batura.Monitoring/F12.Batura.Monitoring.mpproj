@@ -6,7 +6,7 @@
     <RootNamespace>F12.Batura.Monitoring</RootNamespace>
     <Name>F12 Batura Monitoring</Name>
     <ManagementPackName>F12.Batura.Monitoring</ManagementPackName>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.0.4</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -30,6 +30,11 @@
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
   <ItemGroup>
+    <ManagementPackReference Include="Microsoft.SystemCenter.InstanceGroup.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
+      <Alias>MSIL</Alias>
+      <MinVersion>7.5.8501.0</MinVersion>
+    </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.Library">
       <Alias>SC</Alias>
       <PackageToBundle>false</PackageToBundle>
@@ -61,7 +66,16 @@
     <Compile Include="ClassesDiscoveriesRelationship\3_Discovery_Registry_BaturaAppServer.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ManagementPack.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\Unit_WindowsService_Batura.mpx">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

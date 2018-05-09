@@ -3,13 +3,28 @@
   <Manifest>
     <Identity>
       <ID>F12.Batura.Monitoring</ID>
-      <Version>1.0.0.0</Version>
+      <Version>1.0.0.4</Version>
     </Identity>
     <Name>F12 Batura Monitoring</Name>
     <References>
+      <Reference Alias="MSIL">
+        <ID>Microsoft.SystemCenter.InstanceGroup.Library</ID>
+        <Version>7.5.8501.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SC">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>7.0.8433.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
       <Reference Alias="Windows">
         <ID>Microsoft.Windows.Library</ID>
         <Version>7.5.8501.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Health">
+        <ID>System.Health.Library</ID>
+        <Version>7.0.8433.0</Version>
         <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
       </Reference>
       <Reference Alias="System">
@@ -23,6 +38,8 @@
     <EntityTypes>
       <ClassTypes>
         <ClassType ID="F12.Batura.Monitoring.AppServer" Base="Windows!Microsoft.Windows.ApplicationComponent" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false"></ClassType>
+        <ClassType ID="F12.Batura.Monitoring.AppServer.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.Computer.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
       </ClassTypes>
       <RelationshipTypes>
         <RelationshipType ID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer" Base="System!System.Hosting" Abstract="false" Accessibility="Internal">
@@ -90,8 +107,81 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           </Expression>
         </DataSource>
       </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.AppServer.Group.Discovery" Target="F12.Batura.Monitoring.AppServer.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.AppServer"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.Computer.Group.Discovery" Target="F12.Batura.Monitoring.Computer.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="Windows!Microsoft.Windows.Computer"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <Contains maxDepth="1">
+                  <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.AppServer"]$</MonitoringClass>
+                </Contains>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
     </Discoveries>
+    <Monitors>
+      <UnitMonitor ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="Windows!Microsoft.Windows.CheckNTServiceStateMonitorType" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Host/Property[Type='Windows!Microsoft.Windows.Computer']/PrincipalName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Running" MonitorTypeStateID="Running" HealthState="Success" />
+          <OperationalState ID="NotRunning" MonitorTypeStateID="NotRunning" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <ComputerName>$Target/Host/Property[Type='Windows!Microsoft.Windows.Computer']/PrincipalName$</ComputerName>
+          <ServiceName>BaturaDoStuff</ServiceName>
+          <CheckStartupType>False</CheckStartupType>
+        </Configuration>
+      </UnitMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaAppGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.AppServer.Group">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.Computer.Group">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+    </Monitors>
   </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage" />
+    </StringResources>
+  </Presentation>
   <LanguagePacks>
     <LanguagePack ID="ENU" IsDefault="true">
       <DisplayStrings>
@@ -107,9 +197,49 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           <Name>Discover Batura Application Server</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.AppServer.Group.Discovery">
+          <Name>Discover Batura Application Server Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.AppServer.Group">
+          <Name>Batura Application Server Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaAppGroup">
+          <Name>Batura Application Server Group  Health Roll up (Dependency Rollup Monitor)</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Computer.Group">
+          <Name>Batura Computer Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Computer.Group.Discovery">
+          <Name>Discover Batura Computer Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup">
+          <Name>Batura Computer Group  Health Roll up (Dependency Rollup Monitor)</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring">
           <Name>F12 Batura Monitoring</Name>
           <Description>\\server\share\scom\mp\requirements\Batura.docx</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff">
+          <Name>BaturaDoStuff Monitor</Name>
+          <Description>Description for the new unit monitor.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage">
+          <Name>BaturaDoStuff Service is Not Running - Examples Simple Monitors</Name>
+          <Description>The BaturaDoStuff Service is not running on {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" SubElementID="Running">
+          <Name>Running</Name>
+          <Description>Running</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" SubElementID="NotRunning">
+          <Name>NotRunning</Name>
+          <Description>NotRunning</Description>
         </DisplayString>
       </DisplayStrings>
       <KnowledgeArticles></KnowledgeArticles>
