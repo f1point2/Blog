@@ -25,7 +25,7 @@
       </Discovery>
     </Discoveries>
     <Monitors>
-      <DependencyMonitor ID="ApplicationComponentAvailabilityRollup" Accessibility=“Internal“ Enabled=“true“ MemberMonitor=“Health!System.Health.AvailabilityState“ ParentMonitorID=“Health!System.Health.AvailabilityState“ RelationshipType=“LocalApplicationHostsApplicationComponent“ Priority=“Normal“ Remotable=“false“ Target=“SCOMskills.Demo.LocalApplication.Class“>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaAppGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.AppServer.Group">
         <Category>AvailabilityHealth</Category>
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
@@ -38,8 +38,12 @@
           <Name>Discover Batura Application Server Group</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
-        <DisplayString ElementID="F12.Batura.Monitoring..AppServer.Group">
+        <DisplayString ElementID="F12.Batura.Monitoring.AppServer.Group">
           <Name>Batura Application Server Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaAppGroup">
+          <Name>Batura Application Server Group  Health Roll up (Dependency Rollup Monitor)</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
       </DisplayStrings>
