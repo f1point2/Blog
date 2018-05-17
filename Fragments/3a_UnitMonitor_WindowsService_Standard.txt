@@ -1,4 +1,4 @@
-<Monitoring>
+ <Monitoring>
     <Monitors>
       <UnitMonitor ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="Windows!Microsoft.Windows.CheckNTServiceStateMonitorType" ConfirmDelivery="false">
         <Category>AvailabilityHealth</Category>
@@ -36,7 +36,7 @@
           <Description>Description for the new unit monitor.</Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage">
-          <Name>BaturaDoStuff Service is Not Running - Examples Simple Monitors</Name>
+          <Name>BaturaDoStuff Service is Not Running</Name>
           <Description>The BaturaDoStuff Service is not running on {0}</Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" SubElementID="Running">

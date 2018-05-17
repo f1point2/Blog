@@ -1,0 +1,97 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        <ClassType ID="F12.Batura.Monitoring.Databases.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="F12.Batura.Monitoring.Databases.Group.Discovery" Target="F12.Batura.Monitoring.Databases.Group" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="SQL2012!Microsoft.SQLServer.2012.Database"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <And>
+                  <Expression>
+                    <Or>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.Database"]/DatabaseName$</Property>
+                          </ValueExpression>
+                          <Operator>Equal</Operator>
+                          <ValueExpression>
+                            <Value>Batura_App</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.Database"]/DatabaseName$</Property>
+                          </ValueExpression>
+                          <Operator>Equal</Operator>
+                          <ValueExpression>
+                            <Value>Batura_Config</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                    </Or>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.ServerRole"]/InstanceName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>INST1</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                   <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>win12clsqlquins.mcinsight.co.uk</Pattern>
+                    </RegExExpression>
+                  </Expression>
+              </And>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+    <Monitors>
+      <DependencyMonitor ID="F12.Batura.Monitoring.Monitor.DRollup.DatabasesInstanceGroupHealth" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.Databases.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+    </Monitors>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.Databases.Group">
+          <Name>Batura Databases Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Databases.Group.Discovery">
+          <Name>Discover Batura Databases Instance Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

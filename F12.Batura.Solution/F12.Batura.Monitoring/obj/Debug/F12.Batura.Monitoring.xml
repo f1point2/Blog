@@ -3,10 +3,20 @@
   <Manifest>
     <Identity>
       <ID>F12.Batura.Monitoring</ID>
-      <Version>1.0.0.6</Version>
+      <Version>1.0.0.19</Version>
     </Identity>
     <Name>F12 Batura Monitoring</Name>
     <References>
+      <Reference Alias="SQL2012">
+        <ID>Microsoft.SQLServer.2012.Discovery</ID>
+        <Version>6.7.31.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SQLLib">
+        <ID>Microsoft.SQLServer.Library</ID>
+        <Version>6.7.31.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
       <Reference Alias="MSIL">
         <ID>Microsoft.SystemCenter.InstanceGroup.Library</ID>
         <Version>7.5.8501.0</Version>
@@ -15,6 +25,16 @@
       <Reference Alias="SC">
         <ID>Microsoft.SystemCenter.Library</ID>
         <Version>7.0.8433.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="IIS2016">
+        <ID>Microsoft.Windows.InternetInformationServices.2016</ID>
+        <Version>10.0.6.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="IISLib">
+        <ID>Microsoft.Windows.InternetInformationServices.CommonLibrary</ID>
+        <Version>10.0.6.0</Version>
         <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
       </Reference>
       <Reference Alias="Windows">
@@ -42,6 +62,10 @@
         <ClassType ID="F12.Batura.Monitoring.Computer.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
         <ClassType ID="F12.Batura.Monitoring.OperatingSystem.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
         <ClassType ID="F12.Batura.Monitoring.HSW.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.IISWebSites.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.Databases.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.Application.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.IISAppPools.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
       </ClassTypes>
       <RelationshipTypes>
         <RelationshipType ID="F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer" Base="System!System.Hosting" Abstract="false" Accessibility="Internal">
@@ -198,6 +222,182 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           </MembershipRules>
         </DataSource>
       </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.IISWebSites.Group.Discovery" Target="F12.Batura.Monitoring.IISWebSites.Group" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="IIS2016!Microsoft.Windows.InternetInformationServices.10.0.WebSite"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="IISLib!Microsoft.Windows.InternetInformationServices.WebSite"]/Description$</Property>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value>Batura</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>win16ftpserver.mcinsight.co.uk</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.Databases.Group.Discovery" Target="F12.Batura.Monitoring.Databases.Group" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="SQL2012!Microsoft.SQLServer.2012.Database"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <And>
+                  <Expression>
+                    <Or>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.Database"]/DatabaseName$</Property>
+                          </ValueExpression>
+                          <Operator>Equal</Operator>
+                          <ValueExpression>
+                            <Value>Batura_App</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                      <Expression>
+                        <SimpleExpression>
+                          <ValueExpression>
+                            <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.Database"]/DatabaseName$</Property>
+                          </ValueExpression>
+                          <Operator>Equal</Operator>
+                          <ValueExpression>
+                            <Value>Batura_Config</Value>
+                          </ValueExpression>
+                        </SimpleExpression>
+                      </Expression>
+                    </Or>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="SQLLib!Microsoft.SQLServer.ServerRole"]/InstanceName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>INST1</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>win12clsqlquins.mcinsight.co.uk</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.Application.Group.Discovery" Target="F12.Batura.Monitoring.Application.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.AppServer.Group"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.HSW.Group"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.IISWebSites.Group"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.IISAppPools.Group"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="F12.Batura.Monitoring.Databases.Group"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+      <Discovery ID="F12.Batura.Monitoring.IISAppPools.Group.Discovery" Target="F12.Batura.Monitoring.IISAppPools.Group" Enabled="true" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+          <MembershipRules>
+            <MembershipRule>
+              <MonitoringClass>$MPElement[Name="IIS2016!Microsoft.Windows.InternetInformationServices.10.0.ApplicationPool"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities"]$</RelationshipClass>
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="IISLib!Microsoft.Windows.InternetInformationServices.ApplicationPool"]/PoolID$</Property>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value>Batura</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <RegExExpression>
+                      <ValueExpression>
+                        <Property>$MPElement[Name="Windows!Microsoft.Windows.Computer"]/PrincipalName$</Property>
+                      </ValueExpression>
+                      <Operator>ContainsSubstring</Operator>
+                      <Pattern>win16ftpserver.mcinsight.co.uk</Pattern>
+                    </RegExExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
     </Discoveries>
     <Monitors>
       <UnitMonitor ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="Windows!Microsoft.Windows.CheckNTServiceStateMonitorType" ConfirmDelivery="false">
@@ -234,6 +434,22 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
       <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaHSWGroup" Accessibility="Public" Enabled="true" MemberMonitor="Health!System.Health.AvailabilityState" ParentMonitorID="Health!System.Health.AvailabilityState" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" Priority="Normal" Remotable="false" Target="F12.Batura.Monitoring.HSW.Group">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaWebSitesGroup" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.IISWebSites.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.Monitor.DRollup.DatabasesInstanceGroupHealth" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.Databases.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.Monitor.DRollup.ApplicationGroupHealth" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.Application.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
+        <Category>AvailabilityHealth</Category>
+        <Algorithm>WorstOf</Algorithm>
+      </DependencyMonitor>
+      <DependencyMonitor ID="F12.Batura.Monitoring.DepMonitor.BaturaAppPoolsGroup" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.IISAppPools.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
         <Category>AvailabilityHealth</Category>
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
@@ -305,6 +521,38 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.DepMonitor.BaturaHSWGroup">
           <Name>Batura Agent Health Group  Health Roll up (Dependency Rollup Monitor)</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.IISWebSites.Group">
+          <Name>Batura WebSites Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.IISWebSites.Group.Discovery">
+          <Name>Discover Batura WebSites Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Databases.Group">
+          <Name>Batura Databases Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Databases.Group.Discovery">
+          <Name>Discover Batura Databases Instance Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Application.Group.Discovery">
+          <Name>Discover Batura Application Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.Application.Group">
+          <Name>Batura Application</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.IISAppPools.Group">
+          <Name>Batura Application Pools Group</Name>
+          <Description>Description for the new discovery.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.IISAppPools.Group.Discovery">
+          <Name>Discover Batura Application Pools Group</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring">

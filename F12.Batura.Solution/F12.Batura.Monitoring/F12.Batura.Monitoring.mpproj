@@ -6,7 +6,7 @@
     <RootNamespace>F12.Batura.Monitoring</RootNamespace>
     <Name>F12 Batura Monitoring</Name>
     <ManagementPackName>F12.Batura.Monitoring</ManagementPackName>
-    <Version>1.0.0.6</Version>
+    <Version>1.0.0.20</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -30,6 +30,18 @@
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
   <ItemGroup>
+    <ManagementPackReference Include="Microsoft.SQLServer.2012.Discovery">
+      <HintPath>C:\SCOM\Management Packs\SQL Server\Microsoft.SQLServer.2012.Discovery.mp</HintPath>
+      <Alias>SQL2012</Alias>
+      <MinVersion>6.7.31.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SQLServer.Library">
+      <HintPath>C:\SCOM\Management Packs\SQL Server\Microsoft.SQLServer.Library.mp</HintPath>
+      <Alias>SQLLib</Alias>
+      <MinVersion>6.7.31.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.InstanceGroup.Library">
       <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.InstanceGroup.Library.mp</HintPath>
       <Alias>MSIL</Alias>
@@ -39,9 +51,21 @@
       <Alias>SC</Alias>
       <PackageToBundle>false</PackageToBundle>
     </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.InternetInformationServices.2016">
+      <HintPath>C:\SCOM\Management Packs\Internet Information Server\Microsoft.Windows.InternetInformationServices.2016.mp</HintPath>
+      <Alias>IIS2016</Alias>
+      <MinVersion>10.0.6.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.InternetInformationServices.CommonLibrary">
+      <HintPath>C:\SCOM\Management Packs\Internet Information Server\Microsoft.Windows.InternetInformationServices.CommonLibrary.mp</HintPath>
+      <Alias>IISLib</Alias>
+      <MinVersion>10.0.6.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.Windows.Library">
       <Alias>Windows</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
     <ManagementPackReference Include="System.Health.Library">
       <Alias>Health</Alias>
@@ -76,6 +100,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassesDiscoveriesRelationship\7_Group_BaturaHSW.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\8_Group_IISwebsite.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\9a_Group_Databases.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\9b_Group_Application.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ManagementPack.mpx">
