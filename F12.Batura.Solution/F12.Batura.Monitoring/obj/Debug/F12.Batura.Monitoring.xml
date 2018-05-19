@@ -3,7 +3,7 @@
   <Manifest>
     <Identity>
       <ID>F12.Batura.Monitoring</ID>
-      <Version>1.0.0.19</Version>
+      <Version>1.0.0.21</Version>
     </Identity>
     <Name>F12 Batura Monitoring</Name>
     <References>
@@ -64,7 +64,7 @@
         <ClassType ID="F12.Batura.Monitoring.HSW.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
         <ClassType ID="F12.Batura.Monitoring.IISWebSites.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
         <ClassType ID="F12.Batura.Monitoring.Databases.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
-        <ClassType ID="F12.Batura.Monitoring.Application.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
+        <ClassType ID="F12.Batura.Monitoring.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
         <ClassType ID="F12.Batura.Monitoring.IISAppPools.Group" Base="MSIL!Microsoft.SystemCenter.InstanceGroup" Abstract="false" Accessibility="Public" Hosted="false" Singleton="true" />
       </ClassTypes>
       <RelationshipTypes>
@@ -326,7 +326,7 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           </MembershipRules>
         </DataSource>
       </Discovery>
-      <Discovery ID="F12.Batura.Monitoring.Application.Group.Discovery" Target="F12.Batura.Monitoring.Application.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
+      <Discovery ID="F12.Batura.Monitoring.Group.Discovery" Target="F12.Batura.Monitoring.Group" Enabled="true" ConfirmDelivery="false" Priority="Normal" Remotable="true">
         <Category>Discovery</Category>
         <DiscoveryTypes>
           <DiscoveryRelationship TypeID="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" />
@@ -445,7 +445,7 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
         <Category>AvailabilityHealth</Category>
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
-      <DependencyMonitor ID="F12.Batura.Monitoring.Monitor.DRollup.ApplicationGroupHealth" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.Application.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
+      <DependencyMonitor ID="F12.Batura.Monitoring.Monitor.DRollup.ApplicationGroupHealth" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.Group" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" RelationshipType="MSIL!Microsoft.SystemCenter.InstanceGroupContainsEntities" MemberMonitor="Health!System.Health.AvailabilityState">
         <Category>AvailabilityHealth</Category>
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
@@ -539,11 +539,11 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           <Name>Discover Batura Databases Instance Group</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
-        <DisplayString ElementID="F12.Batura.Monitoring.Application.Group.Discovery">
+        <DisplayString ElementID="F12.Batura.Monitoring.Group.Discovery">
           <Name>Discover Batura Application Group</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
-        <DisplayString ElementID="F12.Batura.Monitoring.Application.Group">
+        <DisplayString ElementID="F12.Batura.Monitoring.Group">
           <Name>Batura Application</Name>
           <Description>Description for the new discovery.</Description>
         </DisplayString>
@@ -564,7 +564,7 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
           <Description>Description for the new unit monitor.</Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage">
-          <Name>BaturaDoStuff Service is Not Running - Examples Simple Monitors</Name>
+          <Name>BaturaDoStuff Service is Not Running</Name>
           <Description>The BaturaDoStuff Service is not running on {0}</Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" SubElementID="Running">

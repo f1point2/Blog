@@ -6,7 +6,7 @@
     <RootNamespace>F12.Batura.Monitoring</RootNamespace>
     <Name>F12 Batura Monitoring</Name>
     <ManagementPackName>F12.Batura.Monitoring</ManagementPackName>
-    <Version>1.0.0.20</Version>
+    <Version>1.0.0.21</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
