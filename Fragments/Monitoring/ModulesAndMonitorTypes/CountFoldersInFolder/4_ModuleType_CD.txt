@@ -45,7 +45,7 @@
               <Expression>
                 <SimpleExpression>
                   <ValueExpression>
-                    <XPathQuery Type="Integer">Property[@Name='threshold']</XPathQuery>
+                    <XPathQuery Type="Integer">Property[@Name='NumberOfFolders']</XPathQuery>
                   </ValueExpression>
                   <Operator>LessEqual</Operator>
                   <ValueExpression>
@@ -61,7 +61,7 @@
               <Expression>
                 <SimpleExpression>
                   <ValueExpression>
-                    <XPathQuery Type="Integer">Property[@Name='threshold']</XPathQuery>
+                    <XPathQuery Type="Integer">Property[@Name='NumberOfFolders']</XPathQuery>
                   </ValueExpression>
                   <Operator>Greater</Operator>
                   <ValueExpression>
@@ -104,7 +104,7 @@
                 <Node ID="Filter">
                   <Node ID="DS" />
                 </Node>
-              </Node>
+            </Node>
             </RegularDetection>
             </RegularDetections>
 
