@@ -1,0 +1,34 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Diagnostics>
+      <Diagnostic ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic" Target="F12.Batura.Monitoring.AppServer" Accessibility="Public" Enabled="false" Monitor="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" ExecuteOnState="Error" Remotable="true" Timeout="300">
+        <Category>Maintenance</Category>
+        <ProbeAction ID="PA" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+          <ScriptName>6_PSDiagnostic.ps1</ScriptName>
+          <ScriptBody>$IncludeFileContent/Monitoring/ModulesAndMonitorTypes/FolderMonitoringCountFoldersInFolder/6_PSDiagnostic.ps1$</ScriptBody>
+          <Parameters>
+            <Parameter>
+              <Name>folderPath</Name>
+              <Value>$Data/StateChange/DataItem/Context/DataItem/Property[@Name='FolderPath']$</Value>
+            </Parameter>
+          </Parameters>
+          <TimeoutSeconds>300</TimeoutSeconds>
+        </ProbeAction>
+      </Diagnostic>
+    </Diagnostics>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+
+        <!-- The name of the Diagnostic will appear in the Health Explorer
+             detail pane. The user can manually click the Diagnostic to run
+             it again. -->
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic">
+          <Name>List Folders</Name>
+          <Description>List subfolders</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

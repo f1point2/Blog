@@ -1,0 +1,40 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <ProbeActionModuleType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe" Accessibility="Internal">
+        <Configuration>
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" />
+        </Configuration>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <!-- These are the modules that make up the module, the composition section is where we state the order they run -->
+              <!-- Trigger only probe means it doesn't require any incoming data e.g. use for On Demand Detection-->
+              <ProbeAction ID="Script" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagTriggerOnlyProbe">
+                <ScriptName>1_PScript1.ps1</ScriptName>
+                <ScriptBody>$IncludeFileContent/Monitoring/ModulesAndMonitorTypes/FolderMonitoringCountFoldersInFolder/1_PScript1.ps1$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                      <Name>folderPath</Name>
+                    <Value>$Config/folderPath$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>threshold</Name>
+                    <Value>$Config/threshold$</Value>
+                  </Parameter>
+                  </Parameters>
+                <TimeoutSeconds>120</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Script" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <TriggerOnly>true</TriggerOnly>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ManagementPack SchemaVersion="2.0" ContentReadable="true" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Manifest>
     <Identity>
       <ID>F12.Batura.Monitoring</ID>
-      <Version>1.0.0.21</Version>
+      <Version>1.0.0.99</Version>
     </Identity>
     <Name>F12 Batura Monitoring</Name>
     <References>
@@ -74,6 +74,234 @@
         </RelationshipType>
       </RelationshipTypes>
     </EntityTypes>
+    <ModuleTypes>
+      <DataSourceModuleType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.DS.PropertyBag" Accessibility="Internal">
+        <Configuration>
+          <!-- Need configuration elements for the scheduler -->
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="0" name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <!-- Need configuration elements for the probe -->
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="folderPath" Selector="$Config/folderPath$" ParameterType="string" />
+          <OverrideableParameter ID="threshold" Selector="$Config/threshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Schedule" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Script" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe">
+                <folderPath>$Config/folderPath$</folderPath>
+                <threshold>$Config/threshold$</threshold>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Script">
+                <Node ID="Schedule" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+      <ProbeActionModuleType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe" Accessibility="Internal">
+        <Configuration>
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        </Configuration>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <!-- These are the modules that make up the module, the composition section is where we state the order they run -->
+              <!-- Trigger only probe means it doesn't require any incoming data e.g. use for On Demand Detection-->
+              <ProbeAction ID="Script" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagTriggerOnlyProbe">
+                <ScriptName>1_PScript1.ps1</ScriptName>
+                <ScriptBody><![CDATA[Param (
+[string]$folderPath,
+[int]$threshold
+)
+
+
+Try {
+$API = New-Object -comObject "MOM.ScriptAPI"
+$Bag = $API.CreatePropertyBag()  
+
+#Check that the folder path exists
+$subFolders=Get-ChildItem -Path $folderPath -ErrorAction Stop | Where {$_.PSIsContainer}
+$numFolders=$subFolders.Count
+$api.LogScriptEvent('Number of Folders = ',40,0,$numFolders)
+
+
+	$Bag.AddValue("OutputDescription", "Folders found")
+	$Bag.AddValue("FolderPath", $folderPath)
+	$Bag.AddValue("NumberOfFolders", $numFolders)
+	$Bag.AddValue("Threshold",$threshold)
+}
+
+Catch {
+	$Bag.AddValue("OutputDescription", $_.Exception.Message)
+	$Bag.AddValue("FolderPath", $folderPath)
+	$Bag.AddValue("NumberOfFolders", 0)
+	$Bag.AddValue("Threshold",$threshold)
+
+}
+
+Finally {
+$Bag
+}
+]]></ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>folderPath</Name>
+                    <Value>$Config/folderPath$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>threshold</Name>
+                    <Value>$Config/threshold$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>120</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Script" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <TriggerOnly>true</TriggerOnly>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+    <MonitorTypes>
+      <UnitMonitorType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.MonitorType" Accessibility="Internal">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="LessEqualThreshold" NoDetection="false" />
+          <MonitorTypeState ID="OverThreshold" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="0" name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="From" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="To" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="Days" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="MatchCount" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        </Configuration>
+        <OverrideableParameters>
+          <!-- Copy form 3_DS -->
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="From" Selector="$Config/From$" ParameterType="string" />
+          <OverrideableParameter ID="To" Selector="$Config/To$" ParameterType="string" />
+          <OverrideableParameter ID="Days" Selector="$Config/Days$" ParameterType="int" />
+          <OverrideableParameter ID="MatchCount" Selector="$Config/MatchCount$" ParameterType="int" />
+          <OverrideableParameter ID="folderPath" Selector="$Config/folderPath$" ParameterType="string" />
+          <OverrideableParameter ID="threshold" Selector="$Config/threshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.DS.PropertyBag">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <folderPath>$Config/folderPath$</folderPath>
+              <threshold>$Config/threshold$</threshold>
+            </DataSource>
+            <!-- We want a probe for on demand detection. The ability to use recalucalte health outside of the scheduler \ DS -->
+            <ProbeAction ID="Probe" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe">
+              <folderPath>$Config/folderPath$</folderPath>
+              <threshold>$Config/threshold$</threshold>
+            </ProbeAction>
+            <!-- Condition Detections to determine health states -->
+            <!-- LessEqual -->
+            <ConditionDetection ID="FilterLessEqualThreshold" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='NumberOfFolders']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>LessEqual</Operator>
+                  <ValueExpression>
+                    <Value>$Config/threshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <!-- Condition Detections to determine health states -->
+            <!-- Over -->
+            <ConditionDetection ID="FilterOverThreshold" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='NumberOfFolders']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Greater</Operator>
+                  <ValueExpression>
+                    <Value>$Config/threshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Config/MatchCount$</MatchCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+            <ConditionDetection ID="Filter" TypeID="System!System.SchedulerFilter">
+              <SchedulerFilter>
+                <ProcessDataMode>OnSchedule</ProcessDataMode>
+                <Schedule>
+                  <WeeklySchedule>
+                    <Windows>
+                      <Daily>
+                        <Start>$Config/From$</Start>
+                        <End>$Config/To$</End>
+                        <DaysOfWeekMask>$Config/Days$</DaysOfWeekMask>
+                      </Daily>
+                    </Windows>
+                  </WeeklySchedule>
+                  <ExcludeDates />
+                </Schedule>
+                <UseCurrentTime>true</UseCurrentTime>
+              </SchedulerFilter>
+            </ConditionDetection>
+          </MemberModules>
+          <!-- REGULAR DETECTIONS -->
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="LessEqualThreshold">
+              <Node ID="FilterLessEqualThreshold">
+                <Node ID="DS" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="OverThreshold">
+              <Node ID="FilterOverThreshold">
+                <Node ID="Filter">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <!-- ON DEMAND DETECTIONS -->
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="LessEqualThreshold">
+              <Node ID="FilterLessEqualThreshold">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="OverThreshold">
+              <Node ID="FilterOverThreshold">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
   </TypeDefinitions>
   <Monitoring>
     <Discoveries>
@@ -400,6 +628,34 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
       </Discovery>
     </Discoveries>
     <Monitors>
+      <UnitMonitor ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.MonitorType" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='Threshold']$ </AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name='NumberOfFolders']$ </AlertParameter2>
+            <AlertParameter3>$Data/Context/Property[@Name='FolderPath']$ </AlertParameter3>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="LessEqualThreshold" MonitorTypeStateID="LessEqualThreshold" HealthState="Success" />
+          <OperationalState ID="OverThreshold" MonitorTypeStateID="OverThreshold" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>60</IntervalSeconds>
+          <SyncTime />
+          <From>08:00</From>
+          <To>23:50</To>
+          <Days>62</Days>
+          <MatchCount>1</MatchCount>
+          <folderPath>c:\temp</folderPath>
+          <threshold>5</threshold>
+        </Configuration>
+      </UnitMonitor>
       <UnitMonitor ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="Windows!Microsoft.Windows.CheckNTServiceStateMonitorType" ConfirmDelivery="false">
         <Category>AvailabilityHealth</Category>
         <AlertSettings AlertMessage="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage">
@@ -454,9 +710,65 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
         <Algorithm>WorstOf</Algorithm>
       </DependencyMonitor>
     </Monitors>
+    <Diagnostics>
+      <Diagnostic ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic" Target="F12.Batura.Monitoring.AppServer" Accessibility="Public" Enabled="false" Monitor="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" ExecuteOnState="Error" Remotable="true" Timeout="300">
+        <Category>Maintenance</Category>
+        <ProbeAction ID="PA" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+          <ScriptName>6_PSDiagnostic.ps1</ScriptName>
+          <ScriptBody><![CDATA[
+Param (
+[string]$folderPath
+)
+
+#Check that the folder path exists
+$subFolders=Get-ChildItem -Path $folderPath -ErrorAction Stop | Where {$_.PSIsContainer} 
+ForEach ($subfolder in $subfolders)
+{
+$output += $subFolder.FullName + "`r`n"
+}
+
+$api = New-Object -ComObject 'MOM.ScriptAPI'
+
+$bag=$api.createpropertybag()
+$bag.AddValue('Folders',$output)
+$bag
+
+]]></ScriptBody>
+          <Parameters>
+            <Parameter>
+              <Name>folderPath</Name>
+              <Value>$Data/StateChange/DataItem/Context/DataItem/Property[@Name='FolderPath']$</Value>
+            </Parameter>
+          </Parameters>
+          <TimeoutSeconds>300</TimeoutSeconds>
+        </ProbeAction>
+      </Diagnostic>
+    </Diagnostics>
+    <Recoveries>
+      <Recovery ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Recovery" Target="F12.Batura.Monitoring.AppServer" Monitor="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" Accessibility="Public" Enabled="false" ExecuteOnState="Error" Remotable="true" ResetMonitor="true" Timeout="300">
+        <Category>Maintenance</Category>
+        <WriteAction ID="WA" TypeID="Windows!Microsoft.Windows.PowerShellWriteAction">
+          <ScriptName>8_PRecovery.ps1$</ScriptName>
+          <ScriptBody><![CDATA[param(
+[string]$folderPath
+)
+
+$subFolders=Get-ChildItem -Path $folderPath -ErrorAction Stop | Where {$_.PSIsContainer} | foreach ($_) {remove-item $_.fullname}
+]]></ScriptBody>
+          <Parameters>
+            <Parameter>
+              <Name>folderPath</Name>
+              <Value>$Data/StateChange/DataItem/Context/DataItem/Property[@Name='FolderPath']$</Value>
+            </Parameter>
+          </Parameters>
+          <TimeoutSeconds>300</TimeoutSeconds>
+        </WriteAction>
+      </Recovery>
+    </Recoveries>
   </Monitoring>
   <Presentation>
     <StringResources>
+      <StringResource ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage" />
       <StringResource ID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage" />
     </StringResources>
   </Presentation>
@@ -558,6 +870,30 @@ Values 1, 2, and 3 are used only when the PathType is set to 1.
         <DisplayString ElementID="F12.Batura.Monitoring">
           <Name>F12 Batura Monitoring</Name>
           <Description>\\server\share\scom\mp\requirements\Batura.docx</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor">
+          <Name>Check Number of Folders in Folder</Name>
+          <Description>Description for the new unit monitor.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage">
+          <Name>Too many folders in Batura Config Folder</Name>
+          <Description>There are {1} folders in the folder {2} which is over the threshold of {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" SubElementID="LessEqualThreshold">
+          <Name>Number of Folders in Batura Config folder below threshold</Name>
+          <Description>There are {1} folders in the folder {2} which is less than or equal to the threshold of {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" SubElementID="OverThreshold">
+          <Name>Number of Folders in the Batura Config folder is over threshold</Name>
+          <Description>There are {1} folders in the folder {2} which is over the threshold of {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic">
+          <Name>List Folders</Name>
+          <Description>List subfolders</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Recovery">
+          <Name>Delete Folders</Name>
+          <Description></Description>
         </DisplayString>
         <DisplayString ElementID="F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff">
           <Name>BaturaDoStuff Monitor</Name>

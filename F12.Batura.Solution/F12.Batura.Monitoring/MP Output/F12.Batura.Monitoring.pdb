@@ -8,6 +8,9 @@ ClassesDiscoveriesRelationship\9a_Group_Databases.mpx*F12.Batura.Monitoring.Data
 ClassesDiscoveriesRelationship\9b_Group_Application.mpx*F12.Batura.Monitoring.Group*5*10*ClassType
 ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx*F12.Batura.Monitoring.IISAppPools.Group*5*10*ClassType
 ClassesDiscoveriesRelationship\2_WindowsComputer_Hosts_BaturaApplicationServer.mpx*F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer*5*10*RelationshipType
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\3_DS.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.DS.PropertyBag*4*8*DataSourceModuleType
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\2_Probe.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe*4*8*ProbeActionModuleType
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\4_CD.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.MonitorType*4*8*UnitMonitorType
 ClassesDiscoveriesRelationship\3_Discovery_Registry_BaturaAppServer.mpx*F12.Batura.Monitoring.AppServer.Discovery*5*8*Discovery
 ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring.AppServer.Group.Discovery*11*8*Discovery
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.Computer.Group.Discovery*11*8*Discovery
@@ -17,6 +20,7 @@ ClassesDiscoveriesRelationship\8_Group_IISwebsite.mpx*F12.Batura.Monitoring.IISW
 ClassesDiscoveriesRelationship\9a_Group_Databases.mpx*F12.Batura.Monitoring.Databases.Group.Discovery*11*8*Discovery
 ClassesDiscoveriesRelationship\9b_Group_Application.mpx*F12.Batura.Monitoring.Group.Discovery*11*8*Discovery
 ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx*F12.Batura.Monitoring.IISAppPools.Group.Discovery*11*8*Discovery
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor*4*8*UnitMonitor
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff*4*8*UnitMonitor
 ClassesDiscoveriesRelationship\4_Group_BaturaAppServer.mpx*F12.Batura.Monitoring.DepMonitor.BaturaAppGroup*29*8*DependencyMonitor
 ClassesDiscoveriesRelationship\5_Group_BaturaComputers.mpx*F12.Batura.Monitoring.DepMonitor.BaturaComputerGroup*34*8*DependencyMonitor
@@ -26,6 +30,9 @@ ClassesDiscoveriesRelationship\8_Group_IISwebsite.mpx*F12.Batura.Monitoring.DepM
 ClassesDiscoveriesRelationship\9a_Group_Databases.mpx*F12.Batura.Monitoring.Monitor.DRollup.DatabasesInstanceGroupHealth*77*8*DependencyMonitor
 ClassesDiscoveriesRelationship\9b_Group_Application.mpx*F12.Batura.Monitoring.Monitor.DRollup.ApplicationGroupHealth*45*8*DependencyMonitor
 ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx*F12.Batura.Monitoring.DepMonitor.BaturaAppPoolsGroup*53*8*DependencyMonitor
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\7_Diagnostic.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic*4*8*Diagnostic
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\9_Recovery.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Recovery*4*8*Recovery
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage*36*8*StringResource
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage*29*8*StringResource
 ClassesDiscoveriesRelationship\1_Batura_ApplicationServer_Class.mpx*F12.Batura.Monitoring.AppServer*13*10*DisplayString
 ClassesDiscoveriesRelationship\2_WindowsComputer_Hosts_BaturaApplicationServer.mpx*F12.Batura.Monitoring.WindowsComputerHostsBaturaApplicationServer*15*10*DisplayString
@@ -51,6 +58,12 @@ ClassesDiscoveriesRelationship\9b_Group_Application.mpx*F12.Batura.Monitoring.Gr
 ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx*F12.Batura.Monitoring.IISAppPools.Group*62*10*DisplayString
 ClassesDiscoveriesRelationship\9_Group_IISAppPool.mpx*F12.Batura.Monitoring.IISAppPools.Group.Discovery*66*10*DisplayString
 ManagementPack.mpx*F12.Batura.Monitoring*5*10*DisplayString
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor*42*10*DisplayString
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage*46*10*DisplayString
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor*50*10*DisplayString*SubElementID*LessEqualThreshold
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor*54*10*DisplayString*SubElementID*OverThreshold
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\7_Diagnostic.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Diagnostic*27*10*DisplayString
+Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\9_Recovery.mpx*F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.Recovery*27*10*DisplayString
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff*35*10*DisplayString
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff.AlertMessage*39*10*DisplayString
 Monitoring\Unit_WindowsService_Batura.mpx*F12.Batura.Monitoring.UnitMonitor.Service.BaturaDoStuff*43*10*DisplayString*SubElementID*Running

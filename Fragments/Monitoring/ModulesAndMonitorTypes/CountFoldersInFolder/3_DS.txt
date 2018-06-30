@@ -1,0 +1,40 @@
+ <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.DS.PropertyBag" Accessibility="Internal" >
+        <Configuration>
+          <!-- Need configuration elements for the scheduler -->
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" name="SyncTime" type="xsd:string" />
+          <!-- Need configuration elements for the probe -->
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int"/>
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string"/>
+          <OverrideableParameter ID="folderPath" Selector="$Config/folderPath$" ParameterType="string"/>
+          <OverrideableParameter ID="threshold" Selector="$Config/threshold$" ParameterType="int"/>
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Schedule" TypeID="System!System.SimpleScheduler" >
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Script" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe">
+                <folderPath>$Config/folderPath$</folderPath>
+                <threshold>$Config/threshold$</threshold>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Script">
+                <Node ID="Schedule" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>

@@ -1,0 +1,61 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Monitors>
+      <UnitMonitor ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" Accessibility="Public" Enabled="true" Target="F12.Batura.Monitoring.AppServer" ParentMonitorID="Health!System.Health.AvailabilityState" Remotable="true" Priority="Normal" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.MonitorType" ConfirmDelivery="false">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Data/Context/Property[@Name='Threshold']$ </AlertParameter1>
+            <AlertParameter2>$Data/Context/Property[@Name='NumberOfFolders']$ </AlertParameter2>
+            <AlertParameter3>$Data/Context/Property[@Name='FolderPath']$ </AlertParameter3>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="LessEqualThreshold" MonitorTypeStateID="LessEqualThreshold" HealthState="Success" />
+          <OperationalState ID="OverThreshold" MonitorTypeStateID="OverThreshold" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+       <IntervalSeconds>60</IntervalSeconds>
+          <SyncTime />
+          <From>08:00</From>
+          <To>23:50</To>
+        <Days>62</Days>
+          <MatchCount>1</MatchCount>
+          <folderPath>c:\temp</folderPath>
+          <threshold>5</threshold>
+        </Configuration>
+      </UnitMonitor>
+    </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage" />
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor">
+          <Name>Check Number of Folders in Folder</Name>
+          <Description>Description for the new unit monitor.</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor.AlertMessage">
+          <Name>Too many folders in Batura Config Folder</Name>
+          <Description>There are {1} folders in the folder {2} which is over the threshold of {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" SubElementID="LessEqualThreshold">
+          <Name>Number of Folders in Batura Config folder below threshold</Name>
+          <Description>There are {1} folders in the folder {2} which is less than or equal to the threshold of {0}</Description>
+        </DisplayString>
+        <DisplayString ElementID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Monitor" SubElementID="OverThreshold">
+          <Name>Number of Folders in the Batura Config folder is over threshold</Name>
+          <Description>There are {1} folders in the folder {2} which is over the threshold of {0}</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

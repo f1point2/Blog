@@ -6,7 +6,7 @@
     <RootNamespace>F12.Batura.Monitoring</RootNamespace>
     <Name>F12 Batura Monitoring</Name>
     <ManagementPackName>F12.Batura.Monitoring</ManagementPackName>
-    <Version>1.0.0.21</Version>
+    <Version>1.0.0.99</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -117,6 +117,24 @@
     <Compile Include="ManagementPack.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\2_Probe.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\3_DS.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\4_CD.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\5_Monitor.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\7_Diagnostic.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\9_Recovery.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Monitoring\Unit_WindowsService_Batura.mpx">
       <SubType>Code</SubType>
     </Compile>
@@ -124,6 +142,13 @@
   <ItemGroup>
     <Folder Include="Monitoring" />
     <Folder Include="ClassesDiscoveriesRelationship" />
+    <Folder Include="Monitoring\ModulesAndMonitorTypes" />
+    <Folder Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\1_PScript1.ps1" />
+    <EmbeddedResource Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\6_PSDiagnostic.ps1" />
+    <EmbeddedResource Include="Monitoring\ModulesAndMonitorTypes\FolderMonitoringCountFoldersInFolder\8_PRecovery.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
 </Project>

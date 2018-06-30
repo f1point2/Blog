@@ -1,0 +1,129 @@
+ <TypeDefinitions>
+    <MonitorTypes>
+      <UnitMonitorType ID="F12.Batura.Monitoring.CheckNumFoldersInFolder.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="LessEqualThreshold" NoDetection="false"/>
+          <MonitorTypeState ID="OverThreshold" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" name="SyncTime" type="xsd:string" />
+          <xsd:element minOccurs="1" name="From" type="xsd:string" />
+          <xsd:element minOccurs="1" name="To" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Days" type="xsd:int" />
+          <xsd:element minOccurs="1" name="MatchCount" type="xsd:int" />
+          <xsd:element minOccurs="1" name="folderPath" type="xsd:string" />
+          <xsd:element minOccurs="1" name="threshold" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <!-- Copy form 3_DS -->
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int"/>
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string"/>
+          <OverrideableParameter ID="From" Selector="$Config/From$" ParameterType="string"/>
+          <OverrideableParameter ID="To" Selector="$Config/To$" ParameterType="string"/>
+          <OverrideableParameter ID="Days" Selector="$Config/Days$" ParameterType="int"/>
+          <OverrideableParameter ID="MatchCount" Selector="$Config/MatchCount$" ParameterType="int"/>
+          <OverrideableParameter ID="folderPath" Selector="$Config/folderPath$" ParameterType="string"/>
+          <OverrideableParameter ID="threshold" Selector="$Config/threshold$" ParameterType="int"/>
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.DS.PropertyBag" >
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+              <folderPath>$Config/folderPath$</folderPath>
+              <threshold>$Config/threshold$</threshold>
+            </DataSource>
+            <!-- We want a probe for on demand detection. The ability to use recalucalte health outside of the scheduler \ DS -->
+            <ProbeAction ID="Probe" TypeID="F12.Batura.Monitoring.CheckNumFoldersInFolder.Probe" >
+              <folderPath>$Config/folderPath$</folderPath>
+              <threshold>$Config/threshold$</threshold>
+            </ProbeAction>
+            <!-- Condition Detections to determine health states -->
+            <!-- LessEqual -->
+            <ConditionDetection ID="FilterLessEqualThreshold" TypeID="System!System.ExpressionFilter" >
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='threshold']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>LessEqual</Operator>
+                  <ValueExpression>
+                    <Value>$Config/threshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+
+            <!-- Condition Detections to determine health states -->
+            <!-- Over -->
+            <ConditionDetection ID="FilterOverThreshold" TypeID="System!System.ExpressionFilter" >
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='threshold']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Greater</Operator>
+                  <ValueExpression>
+                    <Value>$Config/threshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Config/MatchCount$</MatchCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+            <ConditionDetection ID="Filter" TypeID="System!System.SchedulerFilter">
+              <SchedulerFilter>
+                <ProcessDataMode>OnSchedule</ProcessDataMode>
+                <Schedule>
+                  <WeeklySchedule>
+                    <Windows>
+                      <Daily>
+                        <Start>$Config/From$</Start>
+                        <End>$Config/To$</End>
+                        <DaysOfWeekMask>$Config/Days$</DaysOfWeekMask>
+                      </Daily>
+                    </Windows>
+                  </WeeklySchedule>
+                  <ExcludeDates />
+                </Schedule>
+                <UseCurrentTime>true</UseCurrentTime>
+                </SchedulerFilter>
+              </ConditionDetection>
+          </MemberModules>
+          <!-- REGULAR DETECTIONS -->
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="LessEqualThreshold">
+              <Node ID="FilterLessEqualThreshold">
+                <Node ID="DS" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="OverThreshold">
+              <Node ID="FilterOverThreshold">
+                <Node ID="Filter">
+                  <Node ID="DS" />
+                </Node>
+              </Node>
+            </RegularDetection>
+            </RegularDetections>
+
+          <!-- ON DEMAND DETECTIONS -->
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="LessEqualThreshold">
+              <Node ID="FilterLessEqualThreshold">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+
+            <OnDemandDetection MonitorTypeStateID="OverThreshold">
+              <Node ID="FilterOverThreshold">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
